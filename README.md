@@ -153,6 +153,10 @@ Why BLS-12-381?
 2.  For Poseidon hash, BLS12-381 is more efficient than BLS12-377. Poseidon hash is widely used in many industry products such as Filecoin and Zcash. The performance of Poseidon hash is critical. To make Poseidon hash secure, BLS12-377 needs around 66% more computation and latency than BLS12-381.
     
 
+## Submission Instruction
+
+Please include your implementation under the `submission` folder and update `evaluate.sh` correspondingly. You may also adapt `submission_compute_msm` function in the `www/index.js` file.
+
 ## Questions
 
 If there are any questions about this prize, please contact boyuan@manta.network
