@@ -1,7 +1,7 @@
 import * as reference from "reference";
 import * as submission from "./submission.wasm"
 import * as utility from "./utility";
-import * as euler from "./euler_bg.wasm";
+import * as euler from "./euler";
 
 const REPEAT = 5;
 
@@ -9,8 +9,6 @@ const REPEAT = 5;
 // point_arr: a js array of points
 // scalar_arr: a js array of scalars
 function submission_compute_msm(point_arr, scalar_arr) {
-  console.log("submission points: ", point_arr);
-  console.log("submission scalars: ", scalar_arr);
   let size = scalar_arr.length
   const wasm_buffer = new Uint8Array(submission.mem.buffer);
   const data_ptr = 1110024;
@@ -28,8 +26,6 @@ function submission_compute_msm(point_arr, scalar_arr) {
 
 // Same as submission.
 function euler_compute_msm(point_arr, scalar_arr) {
-  console.log("euler points: ", point_arr);
-  console.log("euler scalars: ", scalar_arr);
   return euler.compute_msm(point_arr, scalar_arr)
 }
 

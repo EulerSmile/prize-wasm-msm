@@ -11,8 +11,8 @@ cd ..
 
 cd euler
 CC=emcc AR=llvm-ar wasm-pack build --release
-cp pkg/euler_bg.wasm ../www
-cp pkg/euler_bg.js ../www
+rm -rf ../www/euler
+cp -R ./pkg ../www/euler
 cd ..
 
 # Evaluation
