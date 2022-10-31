@@ -5,9 +5,9 @@ cd ..
 
 # Compiles submission into a `.wasm` module
 # Feel free to change
-cd submission
-cp submission.wasm ../www
-cd ..
+#cd submission
+#cp submission.wasm ../www
+#cd ..
 
 cd euler
 CC=emcc AR=llvm-ar wasm-pack build --release
