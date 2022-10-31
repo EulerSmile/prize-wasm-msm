@@ -1,6 +1,5 @@
 import * as reference from "reference";
-import * as submission from "./submission.wasm"
-import * as utility from "./utility";
+
 import * as euler from "./euler";
 
 const REPEAT = 5;
@@ -9,24 +8,7 @@ const REPEAT = 5;
 // point_arr: a js array of points
 // scalar_arr: a js array of scalars
 function submission_compute_msm(point_arr, scalar_arr) {
-  let size = scalar_arr.length
-  const wasm_buffer = new Uint8Array(submission.mem.buffer);
-  const data_ptr = 1110024;
-  let res_ptr = data_ptr + 32 * size + 48 * 2 * size;
-  utility.load_to_wasm(wasm_buffer, data_ptr, scalar_arr, point_arr, size);
-  utility.to_mont(size, data_ptr);
-  submission.g1m_zero(res_ptr);
-  submission.g1m_multiexp(data_ptr, data_ptr + 32 * size, size, 8, res_ptr);
-  submission.g1m_affine(res_ptr, res_ptr);
-  submission.f1m_fromMontgomery(res_ptr, res_ptr);
-  submission.f1m_fromMontgomery(res_ptr + 48, res_ptr + 48);
-  submission.f1m_fromMontgomery(res_ptr + 96, res_ptr + 96);
-  return [wasm_buffer.slice(res_ptr, res_ptr + 48), wasm_buffer.slice(res_ptr + 48, res_ptr + 96), false]
-}
-
-// Same as submission.
-function euler_compute_msm(point_arr, scalar_arr) {
-  return euler.compute_msm(point_arr, scalar_arr)
+    return euler.compute_msm(point_arr, scalar_arr)
 }
 
 /*********************************************************************************************************
@@ -50,19 +32,18 @@ function arraysEqual(arr1, arr2) {
 }
 
 function check_correctness() {
-  for (let repeat = 0; repeat <= 1; repeat++) {
-    for (let size = 4; size <= 6; size += 2) { // Note: This size will be updated during evaluation
+  for (let repeat = 0; repeat <= 100; repeat++) {
+    for (let size = 6; size <= 6; size += 2) { // Note: This size will be updated during evaluation
       const point_vec = new reference.PointVectorInput(Math.pow(2, size));
       const scalar_vec = new reference.ScalarVectorInput(Math.pow(2, size));
       const reference_result = reference.compute_msm(point_vec, scalar_vec).toJsArray();
       const js_point_vec = point_vec.toJsArray();
       const js_scalar_vec = scalar_vec.toJsArray();
-      // const submission_result = submission_compute_msm(js_point_vec, js_scalar_vec);
-      const euler_result = euler_compute_msm(js_point_vec, js_scalar_vec);
-      if (!arraysEqual(euler_result[0], reference_result[0])
-        || !arraysEqual(euler_result[1], reference_result[1])) {
+      const submission_result = submission_compute_msm(js_point_vec, js_scalar_vec);
+      if (!arraysEqual(submission_result[0], reference_result[0])
+        || !arraysEqual(submission_result[1], reference_result[1])) {
         return `Correctness check failed.\n\
-        euler_result: ${euler_result}\n\
+submission_result: ${submission_result}\n\
 reference_result: ${reference_result}\n`;
       }
     }
@@ -82,28 +63,6 @@ function benchmark_submission() {
       (_, i) => {
         const t0 = performance.now();
         submission_compute_msm(js_point_vec, js_scalar_vec);
-        const t1 = performance.now();
-        return t1 - t0;
-      }
-    );
-    let cur_res = `Input vector length: 2^${size}, latency: ${median(perf)} ms \n`;
-    out_text = out_text.concat(cur_res);
-  }
-  return out_text;
-}
-
-function benchmark_euler() {
-  let out_text = "euler performance.\n";
-  for (let size = 6; size <= 6; size += 2) { // Note: This size will be updated during evaluation
-    const point_vec = new reference.PointVectorInput(Math.pow(2, size));
-    const scalar_vec = new reference.ScalarVectorInput(Math.pow(2, size));
-    const js_point_vec = point_vec.toJsArray();
-    const js_scalar_vec = scalar_vec.toJsArray();
-    const perf = Array.from(
-      { length: REPEAT },
-      (_, i) => {
-        const t0 = performance.now();
-        euler_compute_msm(js_point_vec, js_scalar_vec);
         const t1 = performance.now();
         return t1 - t0;
       }
@@ -137,6 +96,5 @@ function benchmark_reference() {
 const correctness_result = check_correctness();
 const benchmark_submission_result = benchmark_submission();
 const benchmark_reference_result = benchmark_reference();
-const benchmark_euler_result = benchmark_euler();
 const pre = document.getElementById("wasm-msm");
-pre.textContent = correctness_result + "\n" + benchmark_submission_result + "\n" + benchmark_euler_result + "\n" + benchmark_reference_result;
+pre.textContent = correctness_result + "\n" + benchmark_submission_result + "\n" + benchmark_reference_result;
