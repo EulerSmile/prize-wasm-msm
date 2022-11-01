@@ -14,7 +14,7 @@ In addition, we use Rust to implement the interface to complete competition.
 
 ## Build with wasm-pack
 
-emcc is used to build the c code of in  [MIRACL Core](https://github.com/miracl/core) .
+[emcc](https://github.com/emscripten-core/emsdk) is used to build the c code from  [MIRACL Core](https://github.com/miracl/core) .
 
 ```
 CC=emcc AR=llvm-ar wasm-pack build
