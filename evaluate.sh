@@ -9,7 +9,7 @@ cd ..
 #cp submission.wasm ../www
 #cd ..
 
-cd euler
+cd submission
 CC=emcc AR=llvm-ar wasm-pack build --release
 rm -rf ../www/euler
 cp -R ./pkg ../www/euler
