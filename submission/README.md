@@ -1,4 +1,4 @@
-# Submission for zprize-wasm-msm from EulerSmile
+# Submission for prize-wasm-msm from EulerSmile
 
 A Rust+C and WebAssembly project using [wasm-pack](https://github.com/rustwasm/wasm-pack).
 
