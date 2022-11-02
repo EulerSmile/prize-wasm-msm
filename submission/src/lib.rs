@@ -40,6 +40,10 @@ pub fn compute_msm(points: Array, scalars: Array) -> Array {
     });
 
     let mut out = vec![0; 97];
+    //allocating memory space for c code
+    //cx will be the points space
+    //ce will be the scalars space
+    //cb will be the window space
     let mut cx: Vec<i32> = vec![0; (size * 45) as usize];
     let mut ce: Vec<i32> = vec![0; (size * 14) as usize];
     let mut cb: Vec<i32> = vec![0; 2*8192 * 45];
