@@ -14,8 +14,8 @@
 
 const int POINT_BYTES = 2 * MODBYTES_384_29 + 1;
 
-//get the best window bit
-//since the range is less than 2^18, so the window is less than 14
+// Get the best window bit
+// Since the range is less than 2^18, so the window is less than 14
 int best_w(int n){
     int k = 4;
     int min = 1 << 30;
@@ -50,7 +50,7 @@ void OCT_fromStr(octet *dst, char *src, int n)
     }
 }
 
-//set a big number from bytes
+// Set a big number from bytes
 void BIG_384_29_fromArkBytes(BIG_384_29 *t, char *c, unsigned char **s)
 {
     memcpy(&c[16], *s, 32); // first 16 byte should be zero.
@@ -58,7 +58,7 @@ void BIG_384_29_fromArkBytes(BIG_384_29 *t, char *c, unsigned char **s)
     *s += 32;
 }
 
-//set a point from bytes
+// Set a point from bytes
 int ECP_BLS12381_fromBytes(ECP_BLS12381 *t, octet *U, unsigned char **s)
 {
     ECP_BLS12381_inf(t);
@@ -68,25 +68,18 @@ int ECP_BLS12381_fromBytes(ECP_BLS12381 *t, octet *U, unsigned char **s)
     return ECP_BLS12381_fromOctet(t, U);
 }
 
-//the main msm function 
+// The main msm function
 void ECP_BLS12381_msm_i(ECP_BLS12381 *P, int n, int32_t *i32X, int32_t *i32e, int32_t *i32B){
     int i,j,k,nb,ret;
     BIG_384_29 t,mt;
     ECP_BLS12381 S,R;
     int window = best_w(n);
     
-    //char u[POINT_BYTES];
-    //char c[48] = { 0 };
-    //octet U = {0, sizeof(u), u};
-    
     ECP_BLS12381_inf(P);
 
-    //BIG_384_29*   it;
     ECP_BLS12381* T;
     ECP_BLS12381* B;
 
-    //ECP_BLS12381 B[4096];
-    i = 0;
     BIG_384_29* te;
     te = (BIG_384_29*)i32e;
     BIG_384_29_copy(mt,te);  BIG_384_29_norm(mt);
@@ -130,7 +123,8 @@ void ECP_BLS12381_msm_i(ECP_BLS12381 *P, int n, int32_t *i32X, int32_t *i32e, in
     }
 }
 
-//transfer the points and scalas from char array to i32 array which be uesd in the miracl-core lib
+// Transfer the points and scalas from char array to i32 array
+// which be uesd in the miracl-core lib.
 void ECP_BLS12381_C2I(int n, 
             const unsigned char *X, int32_t *i32X,
             const unsigned char *e, int32_t *i32e)
@@ -161,7 +155,7 @@ void ECP_BLS12381_C2I(int n,
     }
 }
 
-//run msm and return a point in miracl-core model
+// Run msm and return a point in miracl-core model
 void ECP_muln_impl(ECP_BLS12381 *P, int n, 
             const unsigned char *X, int32_t *i32X,
             const unsigned char *e, int32_t *i32e,
@@ -170,16 +164,18 @@ void ECP_muln_impl(ECP_BLS12381 *P, int n,
     ECP_BLS12381_msm_i(P, n, i32X, i32e, i32B);
 }
 
-//the interface for rust.
-//input
-//n the length of the point/scalar array
-//X the points in char array.
-//i32X the space to store the points X in i32 array
-//e the scalars in char array.
-//i32e the space to store the scalars e in i32 array
-//i32B the space to store the windows used in msm
-//output
-// a point in the char array P
+/** @brief The interface for rust.
+ *
+ * input
+   @param n the length of the point/scalar array
+   @param X the points in char array
+   @param i32X the space to store the points X in i32 array
+   @param e the scalars in char array
+   @param i32e the space to store the scalars e in i32 array
+   @param i32B the space to store the windows used in msm
+ * output
+    @param P a point in the char array
+*/
 void ECP_muln_rust(unsigned char *P, int n, 
             const unsigned char *X, int32_t *i32X,
             const unsigned char *e, int32_t *i32e,

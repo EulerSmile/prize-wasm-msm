@@ -96,10 +96,7 @@ impl PointOutput {
 }
 
 #[wasm_bindgen]
-pub fn compute_msm(
-    point_vec: &PointVectorInput,
-    scalar_vec: &ScalarVectorInput,
-) -> PointOutput {
+pub fn compute_msm(point_vec: &PointVectorInput, scalar_vec: &ScalarVectorInput) -> PointOutput {
     PointOutput {
         point: msm::compute_msm::<G1Affine>(&point_vec.point_vec, &scalar_vec.scalar_vec)
             .into_affine(),
