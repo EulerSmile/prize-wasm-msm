@@ -25,7 +25,7 @@ int best_w(int n){
             k = i;
         }
     }
-    if (k > 14) k = 13;
+    if (k > 14) k = 14;
     return k;
 }
 /* Kill an octet string - Zeroise it for security */

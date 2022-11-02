@@ -42,7 +42,7 @@ pub fn compute_msm(points: Array, scalars: Array) -> Array {
     let mut out = vec![0; 97];
     let mut cx: Vec<i32> = vec![0; (size * 45) as usize];
     let mut ce: Vec<i32> = vec![0; (size * 14) as usize];
-    let mut cb: Vec<i32> = vec![0; 8192 * 45];
+    let mut cb: Vec<i32> = vec![0; 2*8192 * 45];
     
     unsafe {
         ECP_muln_rust(out.as_mut_ptr(), size as i32, x.as_ptr(), cx.as_mut_ptr(), e.as_ptr(), ce.as_mut_ptr(), cb.as_mut_ptr());
