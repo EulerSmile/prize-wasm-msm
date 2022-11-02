@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2022 EulerSmile ( see https://github.com/EulerSmile).
+ *
+ * Dual-licensed under both the MIT and Apache-2.0 licenses;
+ * you may not use this file except in compliance with the License.
+ */
+
 #include <string.h>
 #include <stdio.h>
 #include "ecp_BLS12381.h"
