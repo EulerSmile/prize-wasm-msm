@@ -1,4 +1,7 @@
-# Accelerating Elliptic Curve Operation and Finite Field Arithmetic (WASM)
+### COMPETITION RESULT
+This is a ZPrize competition for [MSM for WASM](https://www.zprize.io/prizes/accelerating-elliptic-curve-operations-and-finite-field-arithmetic-wasm), we improved the performance by 77.85% on the baseline, see [ZPRIZE COMPETITION RESULTS](https://www.zprize.io/blog/announcing-zprize-results) for details.
+
+## Accelerating Elliptic Curve Operation and Finite Field Arithmetic (WASM)
 
   
 
